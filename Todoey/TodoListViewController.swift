@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    let itemArray = ["Find Mike", "Buy Eggs", "Destroy Demon"]
+    var itemArray = ["Find Mike", "Buy Eggs", "Destroy Demon"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +19,7 @@ class TodoListViewController: UITableViewController {
 
     
     //MARK - TableView Data Source Methods
+    ////////////////////////////////////////////////////
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -37,6 +38,7 @@ class TodoListViewController: UITableViewController {
     
     
     //MARK - TableView Delegate Method
+    ////////////////////////////////////////////////////
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -49,7 +51,44 @@ class TodoListViewController: UITableViewController {
         
         //when select a cell is usually stays grey until select other cell but we want it to just light up quickly and thats what this method does
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    //MARK - Add New Items
+    ////////////////////////////////////////////////////
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
+        var textField = UITextField()
+        
+        //make an alert windo pop up with a message
+        let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
+        
+        //create a action button in the alert
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            //what will happen once the user clicks the add icon button in the UIAlert
+            
+            //append the new item to the item array
+            self.itemArray.append(textField.text!)
+            
+            //reload the data to update the table and add the new added item
+            self.tableView.reloadData()
+            
+        }
+        
+        //This method gets triggered when the add icon is pressed -> adds a textfield to alert
+        alert.addTextField { (alertTextField) in
+            //add a placeholder
+            alertTextField.placeholder = "Create new item"
+            //assign local variable to var with bigger scope
+            textField = alertTextField
+        }
+        
+        //add the action button above to the alert
+        alert.addAction(action)
+        
+        //display the alert
+        present(alert, animated: true, completion: nil)
         
     }
     
